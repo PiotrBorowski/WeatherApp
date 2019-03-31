@@ -5,7 +5,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import HourlyScreen from '../screens/HourlyScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import LongTermScreen from '../screens/LongTermScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -39,11 +39,11 @@ HourlyStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const LongTermStack = createStackNavigator({
+  Settings: LongTermScreen,
 });
 
-SettingsStack.navigationOptions = {
+LongTermStack.navigationOptions = {
   tabBarLabel: 'Długoterminowa',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -56,5 +56,5 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   HourlyStack,
-  SettingsStack,
+  LongTermStack,
 });

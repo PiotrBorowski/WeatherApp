@@ -20,8 +20,15 @@ export class WeatherUnit extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#ffa',
-      marginBottom: 10
+      marginRight:10,
+      marginLeft:10,
+      marginTop:10,
+      paddingTop:10,
+      paddingBottom:10,
+      backgroundColor:'#d6ebf2',
+      borderRadius:10,
+      borderWidth: 1,
+      borderColor: '#fff'
     },
     hour: {
       marginBottom: 20,
@@ -31,7 +38,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     temperature: {
-        fontSize: 12
+        fontSize: 14
     },
     wind:{
         fontSize: 12
