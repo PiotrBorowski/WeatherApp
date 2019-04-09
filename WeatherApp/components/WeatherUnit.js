@@ -1,17 +1,21 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import { Ionicons, Feather } from '@expo/vector-icons';
+
 
 export class WeatherUnit extends React.Component {
   render() {
+    if (!this.props.rain) isItRaining = "brak";
+    else isItRaining = this.props.rain;
     return (
     <View style={styles.container}>
         <Text style={styles.hour}>{this.props.hour}</Text>
-
-        <View>
-            <Text style={styles.temperature}>{this.props.temperature}{"\u2103"}</Text>      
-            <Text style={styles.wind}>Wiatr: {this.props.wind}</Text>
-            <Text style={styles.rain}>Opady: {this.props.rain}</Text>
+        <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
+            <Text style={styles.temperature}>{this.props.temperature.toString().substr(0,5)}{"\u2103"}</Text>      
+            <Text style={styles.wind}><Feather name='wind' size={12}/> Wiatr: {this.props.wind} km/h</Text>
+            <Text style={styles.rain}><Feather name='cloud-rain' size={12}/> Opady: {isItRaining}</Text>
         </View>
+
     </View>
     );
   }
@@ -38,14 +42,18 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     temperature: {
-        fontSize: 14
+        fontSize: 20,
+        marginLeft: 5,
+        fontWeight: 'bold'
     },
     wind:{
-        fontSize: 12
+        fontSize: 12,
+        marginLeft: 20
         
     },
     rain: {
-        fontSize: 12
+        fontSize: 12,
+        marginLeft: 20
         
     }
 })
