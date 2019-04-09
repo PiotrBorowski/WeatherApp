@@ -9,7 +9,7 @@ import LongTermScreen from '../screens/LongTermScreen';
 import MapScreen from '../screens/MapScreen';
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+  Home: {screen: HomeScreen},
 });
 
 HomeStack.navigationOptions = {

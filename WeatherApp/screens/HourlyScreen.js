@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { WeatherUnit } from '../components/WeatherUnit';
-import {WEATHER_API_SAMPLE} from '../constants/url'
+import {WEATHER_API_SAMPLE, WEATHER_API} from '../constants/url'
 import WeatherService from '../Services/WeatherService';
 
 export default class HourlyScreen extends React.Component {
@@ -16,7 +16,7 @@ export default class HourlyScreen extends React.Component {
   }
 
   componentDidMount(){
-  WeatherService.CallService(WEATHER_API_SAMPLE).then((response) => this.setState({weatherArray: response.list}));
+  WeatherService.CallService(WEATHER_API).then((response) => this.setState({weatherArray: response.list}));
   }
 
   renderWeather = () => {
