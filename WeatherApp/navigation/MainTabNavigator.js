@@ -1,15 +1,20 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import HourlyScreen from '../screens/HourlyScreen';
 import LongTermScreen from '../screens/LongTermScreen';
 import MapScreen from '../screens/MapScreen';
+import AddCityScreen from '../screens/AddCityScreen'
 
 const HomeStack = createStackNavigator({
   Home: {screen: HomeScreen},
+  Hourly: {screen: HourlyScreen},
+  Long: {screen: LongTermScreen},
+  Map: {screen: MapScreen},
+  AddCity: {screen: AddCityScreen},
 });
 
 HomeStack.navigationOptions = {
@@ -72,5 +77,5 @@ export default createBottomTabNavigator({
   HomeStack,
   HourlyStack,
   LongTermStack,
-  MapStack
+  MapStack,
 });

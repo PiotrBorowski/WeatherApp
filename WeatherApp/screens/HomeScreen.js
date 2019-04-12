@@ -13,13 +13,21 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Aplikacja pogodowa',
-    headerRight: <Button
-    //onPress={() => this.props.navigation.navigate('Parametres')}
-    title="Dodaj miasto"
-    color="#aaaaaa"
-/>,
+  
+  alertMe(){
+    alert
+  }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: "HomeScreen",
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate('AddCity')}
+          title="Dodaj miasto"
+          color="#f123"
+        />
+      ),
+    };
   };
 
   render() {
