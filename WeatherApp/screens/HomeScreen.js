@@ -6,17 +6,30 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Button
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
   
+  alertMe(){
+    alert
+  }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: "HomeScreen",
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate('AddCity')}
+          title="Dodaj miasto"
+          color="#f123"
+        />
+      ),
+    };
+  };
+
   render() {
     return (
       <View style={styles.container}>
