@@ -1,5 +1,9 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { WEATHER_API_LONGTERM, WEATHER_API_ID, WEATHER_API_LONGTERM_SAMPLE } from '../constants/url';
+import WeatherService from '../Services/WeatherService';
+import { WeatherUnitDaily } from '../components/WeatherUnitDaily';
+import moment from 'moment';
 
 
 export default class LongTermScreen extends React.Component {
@@ -7,11 +11,61 @@ export default class LongTermScreen extends React.Component {
     title: 'Prognoza długoterminowa',
   };
 
+  constructor(props){
+    super(props);
+    this.state = {
+       weatherArray: [],
+       cityName: ""
+      }
+  }
+
+  componentDidMount(){
+  WeatherService.CallService(WEATHER_API_LONGTERM_SAMPLE).then((response) => this.setState({weatherArray: response.list, cityName: response.city.name}));
+  }
+
+  convertToDate = (stamp) =>{
+    var t = moment(new Date(stamp*1000)).format("DD MMMM");
+    return t;
+  }
+
+  renderWeather = () => {
+    if(this.state.weatherArray != null)
+    return this.state.weatherArray.map(weather => {
+      return <WeatherUnitDaily date={this.convertToDate(weather.dt)} temperature={weather.temp.day-273.15} pressure={weather.pressure} humidity={weather.humidity}/> }
+  );
+  }
+
+
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return (
-      <View></View>
+      <ScrollView style={styles.container}>
+      <Text style={styles.centerText}>{this.state.cityName}</Text>
+
+      {this.renderWeather()}
+
+    </ScrollView>
     );
   }
+
+  
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 15,
+    backgroundColor: '#fff',
+  },
+  codeHighlightText: {
+    color: 'rgba(96,100,109, 0.8)',
+  },
+  centerText: {
+    marginBottom: 10,
+    color: 'rgba(0,0,0, 0.8)',
+    fontSize: 16,
+    lineHeight: 19,
+    textAlign: 'center',
+  }
+});

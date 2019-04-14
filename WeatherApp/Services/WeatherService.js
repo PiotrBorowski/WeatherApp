@@ -1,6 +1,3 @@
-import {WEATHER_API_SAMPLE} from '../constants/url'
-
-
 export default class WeatherService{
     static CallService(url){
         var ret = fetch(url)

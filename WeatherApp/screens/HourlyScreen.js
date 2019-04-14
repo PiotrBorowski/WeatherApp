@@ -22,7 +22,7 @@ export default class HourlyScreen extends React.Component {
   renderWeather = () => {
     if(this.state.weatherArray != null)
     return this.state.weatherArray.map(weather => {
-      return <WeatherUnit hour={weather.dt_txt} temperature={weather.main.temp-273.15} wind={weather.wind.speed}/> }
+      return <WeatherUnit key={weather.dt_text} hour={weather.dt_txt} temperature={weather.main.temp-273.15} wind={weather.wind.speed}/> }
   );
   }
 
