@@ -1,19 +1,17 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export class WeatherUnit extends React.Component {
+export class WeatherUnitDaily extends React.Component {
   render() {
-    if (!this.props.rain) isItRaining = "brak";
-    else isItRaining = this.props.rain;
     return (
     <View style={styles.container}>
-        <Text style={styles.hour}>{this.props.hour}</Text>
+        <Text style={styles.date}>{this.props.date}</Text>
         <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
             <Text style={styles.temperature}>{this.props.temperature.toString().substr(0,3)}{"\u2103"}</Text>      
-            <Text style={styles.wind}><Feather name='wind' size={12}/> Wiatr: {this.props.wind} km/h</Text>
-            <Text style={styles.rain}><Feather name='cloud-rain' size={12}/> Opady: {isItRaining}</Text>
+            <Text style={styles.pressure}><Feather name='arrow-down' size={12}/> Ciśnienie: {this.props.pressure}hPa</Text>
+            <Text style={styles.humidity}><MaterialCommunityIcons name='weather-fog' size={12}/> Wilgotność: {this.props.humidity}%</Text>
         </View>
 
     </View>
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#fff'
     },
-    hour: {
+    date: {
       marginBottom: 20,
       color: 'rgba(0,0,0,0.4)',
       fontSize: 16,
@@ -46,12 +44,12 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         fontWeight: 'bold'
     },
-    wind:{
+    pressure:{
         fontSize: 12,
         marginLeft: 20
         
     },
-    rain: {
+    humidity: {
         fontSize: 12,
         marginLeft: 20
         
