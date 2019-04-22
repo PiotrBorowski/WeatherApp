@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
+import { WEATHER_API_HOMESCREEN, WEATHER_API_ID } from '../constants/url';
+import WeatherService from '../Services/WeatherService';
 
 
 export default class HomeScreen extends React.Component {
@@ -22,8 +24,13 @@ export default class HomeScreen extends React.Component {
 
   constructor(props){
     super(props);
-    this.state ={ longitude: 0,
-    latitude: 0}
+    this.state =
+    { 
+      longitude: 0,
+      latitude: 0,
+      weatherArray: [],
+      cityName: ''
+    }
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -44,20 +51,27 @@ export default class HomeScreen extends React.Component {
     }
 
   getLocation(){
-    navigator.geolocation.getCurrentPosition(
+      navigator.geolocation.getCurrentPosition(
         (e) => {
-            this.setState({longitude: e.coords.longitude,
-            latitude: e.coords.latitude})
+            this.setState({
+              longitude: e.coords.longitude,
+              latitude: e.coords.latitude
+          })
+          this.getWeather();
         },
         (error) => Alert.alert(error.message),
         {enableHighAccuracy: true, timeout: 20000, maximumAge:1000}
-    );
+    );  
+  }
+
+  getWeather(){
+    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID).then((response) => this.setState({weatherArray: response.list, cityName: response.city.name}));
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Dlugosc {this.state.longitude} Szerokosc {this.state.latitude}</Text>        
+      <View style={styles.container}> 
+        <Text style={styles.cityName}>{this.state.cityName}</Text>      
       </View>
     );
   }
@@ -108,10 +122,9 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  getStartedText: {
-    fontSize: 17,
+  cityName: {
+    fontSize: 32,
     color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
     textAlign: 'center',
   },
   tabBarInfoContainer: {
