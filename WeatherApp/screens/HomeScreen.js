@@ -28,7 +28,7 @@ export default class HomeScreen extends React.Component {
     { 
       longitude: 0,
       latitude: 0,
-      weatherArray: [],
+      temperature: 0,
       cityName: ''
     }
   }
@@ -65,13 +65,14 @@ export default class HomeScreen extends React.Component {
   }
 
   getWeather(){
-    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID).then((response) => this.setState({weatherArray: response.list, cityName: response.city.name}));
+    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID).then((response) => this.setState({temperature: response.list[0].main.temp-273, cityName: response.city.name}));
   }
 
   render() {
     return (
       <View style={styles.container}> 
-        <Text style={styles.cityName}>{this.state.cityName}</Text>      
+        <Text style={styles.cityName}>{this.state.cityName}</Text>    
+        <Text>{this.state.temperature.toFixed(2)}</Text>  
       </View>
     );
   }

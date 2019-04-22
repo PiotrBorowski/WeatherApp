@@ -6,10 +6,10 @@ import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 export class WeatherUnitDaily extends React.Component {
   render() {
     return (
-    <View style={styles.container}>
+    <View style={styles.container} key={this.props.id}>
         <Text style={styles.date}>{this.props.date}</Text>
         <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
-            <Text style={styles.temperature}>{this.props.temperature.toString().substr(0,3)}{"\u2103"}</Text>      
+            <Text style={styles.temperature}>{this.props.temperature.toFixed(0)}{"\u2103"}</Text>      
             <Text style={styles.pressure}><Feather name='arrow-down' size={12}/> Ciśnienie: {this.props.pressure}hPa</Text>
             <Text style={styles.humidity}><MaterialCommunityIcons name='weather-fog' size={12}/> Wilgotność: {this.props.humidity}%</Text>
         </View>

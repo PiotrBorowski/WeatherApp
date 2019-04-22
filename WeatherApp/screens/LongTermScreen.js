@@ -31,7 +31,7 @@ export default class LongTermScreen extends React.Component {
   renderWeather = () => {
     if(this.state.weatherArray != null)
     return this.state.weatherArray.map(weather => {
-      return <WeatherUnitDaily date={this.convertToDate(weather.dt)} temperature={weather.temp.day-273.15} pressure={weather.pressure} humidity={weather.humidity}/> }
+      return <WeatherUnitDaily key={weather.dt} id={weather.dt} date={this.convertToDate(weather.dt)} temperature={weather.temp.day-273.15} pressure={weather.pressure} humidity={weather.humidity}/> }
   );
   }
 
@@ -40,12 +40,13 @@ export default class LongTermScreen extends React.Component {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return (
-      <ScrollView style={styles.container}>
-      <Text style={styles.centerText}>{this.state.cityName}</Text>
+      <View style={styles.container}>
+      <Text style={styles.cityName}>{this.state.cityName}</Text>
+        <ScrollView>
+        {this.renderWeather()}
+        </ScrollView>
+      </View>
 
-      {this.renderWeather()}
-
-    </ScrollView>
     );
   }
 
@@ -61,11 +62,9 @@ const styles = StyleSheet.create({
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',
   },
-  centerText: {
-    marginBottom: 10,
-    color: 'rgba(0,0,0, 0.8)',
-    fontSize: 16,
-    lineHeight: 19,
+  cityName: {
+    fontSize: 32,
+    color: 'rgba(96,100,109, 1)',
     textAlign: 'center',
-  }
+  },
 });
