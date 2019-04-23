@@ -12,8 +12,8 @@ export class WeatherUnit extends React.Component {
         <Text style={styles.hour}>{this.props.hour}</Text>
         <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
             <Text style={styles.temperature}>{this.props.temperature.toFixed(0)}{"\u2103"}</Text>      
-            <Text style={styles.wind}><Feather name='wind' size={12}/> Wiatr: {this.props.wind} km/h</Text>
-            <Text style={styles.rain}><Feather name='cloud-rain' size={12}/> Opady: {isItRaining}</Text>
+            <Text style={styles.wind}><Feather name='wind' size={12}/> {this.props.wind} km/h</Text>
+            <Text style={styles.rain}><Feather name='cloud-rain' size={12}/> {isItRaining}</Text>
         </View>
 
     </View>

@@ -12,9 +12,9 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
-import { WEATHER_API_HOMESCREEN, WEATHER_API_ID } from '../constants/url';
+import { WEATHER_API_HOMESCREEN, WEATHER_API_ID, WEATHER_API_ICON } from '../constants/url';
 import WeatherService from '../Services/WeatherService';
-
+import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class HomeScreen extends React.Component {
   
@@ -29,6 +29,10 @@ export default class HomeScreen extends React.Component {
       longitude: 0,
       latitude: 0,
       temperature: 0,
+      pressure: 0,
+      humidity: 0,
+      iconUrl: '01d',
+      wind: 0,
       cityName: ''
     }
   }
@@ -65,19 +69,43 @@ export default class HomeScreen extends React.Component {
   }
 
   getWeather(){
-    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID).then((response) => this.setState({temperature: response.list[0].main.temp-273, cityName: response.city.name}));
+    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID)
+    .then(
+      (response) => this.setState({
+        temperature: response.list[0].main.temp-273, 
+        cityName: response.city.name,
+        iconUrl: response.list[0].weather[0].icon,
+        pressure: response.list[0].main.pressure,
+        humidity: response.list[0].main.humidity,
+        wind: response.list[0].wind.speed,
+
+      }));
   }
 
   render() {
     return (
       <View style={styles.container}> 
-        <Text style={styles.cityName}>{this.state.cityName}</Text>    
-        <Text>{this.state.temperature.toFixed(2)}</Text>  
+        <Text style={styles.cityName}>{this.state.cityName}</Text> 
+
+        <View style={styles.weatherContainer}>
+          <Image 
+          source={{
+            uri: WEATHER_API_ICON + this.state.iconUrl + '.png'}} 
+          style={styles.imageStyle}/>
+        </View>
+        <View style={styles.weatherContainer}>
+          <Text style={styles.temperature}>{this.state.temperature.toFixed(0)}{"\u2103"}</Text>  
+        </View>
+
+        <View style={styles.additionalInfoContainer}>
+          <Text style={styles.additionalInfo}><MaterialCommunityIcons name='weather-fog' size={12}/> Wilgotność: {this.state.humidity}%</Text>
+          <Text style={styles.additionalInfo}><Feather name='arrow-down' size={12}/> Ciśnienie: {this.state.pressure} hPa</Text>
+          <Text style={styles.additionalInfo}><Feather name='wind' size={12}/> Wiatr: {this.state.wind} km/h</Text>
+        </View>
+
       </View>
     );
   }
-
- 
 
 }
 
@@ -86,85 +114,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
   cityName: {
     fontSize: 32,
     color: 'rgba(96,100,109, 1)',
     textAlign: 'center',
   },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+  temperature: {
+    fontSize: 50,
     textAlign: 'center',
   },
-  navigationFilename: {
-    marginTop: 5,
+  imageStyle:{ 
+    resizeMode: 'contain',
+    flex: 1,
+    alignSelf: 'auto'
   },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
+  weatherContainer: {
+    flex: 1,
+    margin: 6,
   },
-  helpLink: {
-    paddingVertical: 15,
+  additionalInfoContainer:{
+    margin: 10
   },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  additionalInfo: {
+    fontSize: 14
+  }
 });
