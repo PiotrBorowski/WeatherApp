@@ -10,8 +10,7 @@ import {
   Button,
   Alert
 } from 'react-native';
-import { WebBrowser } from 'expo';
-import { MonoText } from '../components/StyledText';
+
 import { WEATHER_API_HOMESCREEN, WEATHER_API_ID, WEATHER_API_ICON } from '../constants/url';
 import WeatherService from '../Services/WeatherService';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -33,7 +32,9 @@ export default class HomeScreen extends React.Component {
       humidity: 0,
       iconUrl: '01d',
       wind: 0,
-      cityName: ''
+      cityName: 'Wrocław',
+      description: 'Raining',
+      date: '01-01-2001'
     }
   }
 
@@ -41,11 +42,13 @@ export default class HomeScreen extends React.Component {
     return {
       headerTitle: "Home",
       headerRight: (
-        <Button
-          onPress={() => navigation.navigate('AddCity')}
-          title="Dodaj miasto"
-          color="#f123"
-        />
+        <View style={styles.addButton}>
+          <Button
+            onPress={() => navigation.navigate('AddCity')}
+            title="Dodaj miasto"
+            color='rgba(96,100,109, 0.5)'      
+          />
+        </View>        
       )
     };
   };
@@ -64,7 +67,7 @@ export default class HomeScreen extends React.Component {
           this.getWeather();
         },
         (error) => Alert.alert(error.message),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge:1000}
+        { enableHighAccuracy: false}
     );  
   }
 
@@ -78,7 +81,8 @@ export default class HomeScreen extends React.Component {
         pressure: response.list[0].main.pressure,
         humidity: response.list[0].main.humidity,
         wind: response.list[0].wind.speed,
-
+        decription: response.list[0].weather[0].description,
+        date: response.list[0].dt_txt
       }));
   }
 
@@ -86,6 +90,8 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}> 
         <Text style={styles.cityName}>{this.state.cityName}</Text> 
+        <Text style={styles.date}>{this.state.date}</Text> 
+
 
         <View style={styles.weatherContainer}>
           <Image 
@@ -95,6 +101,10 @@ export default class HomeScreen extends React.Component {
         </View>
         <View style={styles.weatherContainer}>
           <Text style={styles.temperature}>{this.state.temperature.toFixed(0)}{"\u2103"}</Text>  
+        </View>
+
+        <View style={styles.weatherContainer}>
+          <Text style={styles.description}>{this.state.description}</Text>  
         </View>
 
         <View style={styles.additionalInfoContainer}>
@@ -110,12 +120,25 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    margin: 5,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
   cityName: {
     fontSize: 32,
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center',
+  },
+  date: {
+    fontSize: 18,
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center',
+  },
+  description: {
+    fontSize: 26,
     color: 'rgba(96,100,109, 1)',
     textAlign: 'center',
   },

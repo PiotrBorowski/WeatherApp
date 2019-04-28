@@ -46,12 +46,11 @@ const styles = StyleSheet.create({
     },
     pressure:{
         fontSize: 12,
-        marginLeft: 20
-        
+        textAlign: 'center'        
     },
     humidity: {
         fontSize: 12,
-        marginLeft: 20
+        marginRight: 5
         
     }
 })

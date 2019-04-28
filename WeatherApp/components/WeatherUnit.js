@@ -48,12 +48,10 @@ const styles = StyleSheet.create({
     },
     wind:{
         fontSize: 12,
-        marginLeft: 20
-        
+        marginLeft: 20       
     },
     rain: {
         fontSize: 12,
-        marginLeft: 20
-        
+        marginRight: 5
     }
 })
