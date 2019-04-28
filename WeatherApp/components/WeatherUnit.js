@@ -8,12 +8,12 @@ export class WeatherUnit extends React.Component {
     if (!this.props.rain) isItRaining = "brak";
     else isItRaining = this.props.rain;
     return (
-    <View style={styles.container}>
+    <View style={styles.container} key={this.props.id}>
         <Text style={styles.hour}>{this.props.hour}</Text>
         <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
-            <Text style={styles.temperature}>{this.props.temperature.toString().substr(0,3)}{"\u2103"}</Text>      
-            <Text style={styles.wind}><Feather name='wind' size={12}/> Wiatr: {this.props.wind} km/h</Text>
-            <Text style={styles.rain}><Feather name='cloud-rain' size={12}/> Opady: {isItRaining}</Text>
+            <Text style={styles.temperature}>{this.props.temperature.toFixed(0)}{"\u2103"}</Text>      
+            <Text style={styles.wind}><Feather name='wind' size={12}/> {this.props.wind} km/h</Text>
+            <Text style={styles.rain}><Feather name='cloud-rain' size={12}/> {isItRaining}</Text>
         </View>
 
     </View>
@@ -48,12 +48,10 @@ const styles = StyleSheet.create({
     },
     wind:{
         fontSize: 12,
-        marginLeft: 20
-        
+        marginLeft: 20       
     },
     rain: {
         fontSize: 12,
-        marginLeft: 20
-        
+        marginRight: 5
     }
 })
