@@ -4,6 +4,7 @@ import { WEATHER_API_LONGTERM, WEATHER_API_ID, WEATHER_API_LONGTERM_SAMPLE } fro
 import WeatherService from '../Services/WeatherService';
 import { WeatherUnitDaily } from '../components/WeatherUnitDaily';
 import moment from 'moment';
+import StorageService from '../Services/StorageService';
 
 
 export default class LongTermScreen extends React.Component {
@@ -19,8 +20,15 @@ export default class LongTermScreen extends React.Component {
       }
   }
 
-  componentDidMount(){
-  WeatherService.CallService(WEATHER_API_LONGTERM_SAMPLE).then((response) => this.setState({weatherArray: response.list, cityName: response.city.name}));
+  async componentDidMount(){
+    const city = await StorageService.retrieveData('currentCity');
+    if(city != null)
+    {
+      WeatherService.CallService(WEATHER_API_LONGTERM_SAMPLE)
+      .then(
+        (response) => 
+        this.setState({weatherArray: response.list, cityName: response.city.name}));
+    }
   }
 
   convertToDate = (stamp) =>{

@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 import { WEATHER_API_HOMESCREEN, WEATHER_API_ID, WEATHER_API_ICON } from '../constants/url';
 import WeatherService from '../Services/WeatherService';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import StorageService from '../Services/StorageService';
 
 export default class HomeScreen extends React.Component {
   
@@ -32,8 +34,8 @@ export default class HomeScreen extends React.Component {
       humidity: 0,
       iconUrl: '01d',
       wind: 0,
-      cityName: 'Wrocław',
-      description: 'Raining',
+      cityName: '',
+      description: '',
       date: '01-01-2001'
     }
   }
@@ -54,7 +56,7 @@ export default class HomeScreen extends React.Component {
   };
 
   componentDidMount(){
-     this.getLocation();
+      this.getLocation();
     }
 
   getLocation(){
@@ -71,19 +73,23 @@ export default class HomeScreen extends React.Component {
     );  
   }
 
-  getWeather(){
+  async getWeather(){
     WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID)
-    .then(
-      (response) => this.setState({
+    .then(    
+      async (response) => {this.setState({
         temperature: response.list[0].main.temp-273, 
         cityName: response.city.name,
         iconUrl: response.list[0].weather[0].icon,
         pressure: response.list[0].main.pressure,
         humidity: response.list[0].main.humidity,
         wind: response.list[0].wind.speed,
-        decription: response.list[0].weather[0].description,
+        description: response.list[0].weather[0].description,
         date: response.list[0].dt_txt
-      }));
+      })
+
+      await StorageService.storeValue('currentCity',this.state.cityName);
+      }
+      );
   }
 
   render() {
