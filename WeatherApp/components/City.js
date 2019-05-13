@@ -2,17 +2,28 @@ import React from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 
 export class City extends React.Component {
+
+    deleteCity = () =>
+    {
+        this.props.deleteCity(this.props.name);
+    }
+
+    selectCity = () => 
+    {
+        this.props.selectCity(this.props.name);
+    }
+
     render() {     
       return (
       <View style={styles.container} key={this.props.id}>
           <Text style={styles.name}>{this.props.name}</Text>
           <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
                 <View style={styles.buttonDelete}>
-                    <Button  title='usun'/>
+                    <Button title='usun' onPress={this.deleteCity}/>
                 </View>
               
                 <View style={styles.buttonSelect} >
-                    <Button title='wybierz'/>                    
+                    <Button title='wybierz' onPress={this.selectCity}/>                    
                 </View>
 
           </View>

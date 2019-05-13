@@ -49,12 +49,12 @@ export default class AddCityScreen extends React.Component {
           citiesJson.push(response.city);
           this.setState({cities: citiesJson});
           await StorageService.storeValue('cities', JSON.stringify(citiesJson));
+          this.setState({city: ''});
         }
         else 
         {
           this.setState({error: true});
-        }
-      
+        }    
 
       }
       );
@@ -63,17 +63,42 @@ export default class AddCityScreen extends React.Component {
   renderCities = () => {
     if(this.state.cities != null)
     return this.state.cities.map(city => {
-      return <City key={city.id} id={city.id} name={city.name} /> }
+      return <City key={city.id} id={city.id} name={city.name} deleteCity={this.deleteCity} selectCity={this.selectCity}/> }
   );
+  }
+
+  deleteCity = async (name) =>
+  {
+    var list = await StorageService.retrieveData('cities');
+    var citiesJson = [];
+    var newList = [];
+    if(list != null)
+    {
+      citiesJson = JSON.parse(list);
+      newList = citiesJson.filter( (el) => {
+        return el.name != name;
+      });
+    }
+
+    this.setState({cities: newList});
+    await StorageService.storeValue('cities', JSON.stringify(newList));
+
+  }
+
+  selectCity = async (name) => 
+  {
+    await StorageService.storeValue('currentCity', name);
   }
 
   render() {
     return (
       <View style={styles.MainContainer}>
         <TextInput
+          clearButtonMode='always'
           style={{height: 40}}
           placeholder="Dodaj nowe miasto"
           onChangeText={(city) => this.setState({city})}
+          value={this.state.city}
         />
         <Button title="Dodaj" onPress={this.addCity}/>
         {this.state.error ? (<Text style={{color: 'red'}}>Nie znaleziono miasta</Text>) : null}
@@ -91,7 +116,7 @@ export default class AddCityScreen extends React.Component {
   const styles = StyleSheet.create({
     MainContainer :{
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'stretch',
         flex:1,      
     },
   });
