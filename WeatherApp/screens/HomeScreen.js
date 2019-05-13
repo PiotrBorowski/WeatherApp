@@ -47,7 +47,7 @@ export default class HomeScreen extends React.Component {
         <View style={styles.addButton}>
           <Button
             onPress={() => navigation.navigate('AddCity')}
-            title="Dodaj miasto"
+            title="Miasta"
             color='rgba(96,100,109, 0.5)'      
           />
         </View>        
