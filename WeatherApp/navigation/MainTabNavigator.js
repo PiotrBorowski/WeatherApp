@@ -36,7 +36,7 @@ const HourlyStack = createStackNavigator({
 });
 
 HourlyStack.navigationOptions = {
-  tabBarLabel: 'Godzinowa',
+  tabBarLabel: 'Hourly',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -50,7 +50,7 @@ const LongTermStack = createStackNavigator({
 });
 
 LongTermStack.navigationOptions = {
-  tabBarLabel: 'Długoterminowa',
+  tabBarLabel: 'Long Term',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -64,7 +64,7 @@ const MapStack = createStackNavigator({
 });
 
 MapStack.navigationOptions = {
-  tabBarLabel: 'Mapa Pogodowa',
+  tabBarLabel: 'Weather Map',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

@@ -9,7 +9,7 @@ import {City} from '../components/City'
 
 export default class AddCityScreen extends React.Component {
   static navigationOptions = {
-    title: 'Twoje miasta',
+    title: 'Your cities',
   };
 
   constructor(props){
@@ -18,14 +18,20 @@ export default class AddCityScreen extends React.Component {
     { 
       city: '',
       cities: [],
-      error: false
+      error: false,
+      current: ''
     }
   }
 
-
-
  async componentDidMount(){
-     this.setState({cities: JSON.parse(await StorageService.retrieveData('cities'))});
+    const current = await StorageService.retrieveData('currentCity');
+    this.setState({current});
+    this.setState({cities: JSON.parse(await StorageService.retrieveData('cities'))});
+    }
+
+  async shouldComponentUpdate(){
+    const current = await StorageService.retrieveData('currentCity');
+    this.setState({current});
   }
 
   addCity = async () => 
@@ -60,11 +66,17 @@ export default class AddCityScreen extends React.Component {
       );
   }
 
-  renderCities = () => {
+  renderCities =  () => {
     if(this.state.cities != null)
-    return this.state.cities.map(city => {
-      return <City key={city.id} id={city.id} name={city.name} deleteCity={this.deleteCity} selectCity={this.selectCity}/> }
-  );
+    return this.state.cities.map(city => {     
+      if (this.state.current == city.name)
+      {
+       return <City selected={true} key={city.id} id={city.id} name={city.name} deleteCity={this.deleteCity} selectCity={this.selectCity}/>         
+      }
+      else{
+        return <City selected={false} key={city.id} id={city.id} name={city.name} deleteCity={this.deleteCity} selectCity={this.selectCity}/>
+      }
+    });
   }
 
   deleteCity = async (name) =>
@@ -88,9 +100,10 @@ export default class AddCityScreen extends React.Component {
   selectCity = async (name) => 
   {
     await StorageService.storeValue('currentCity', name);
+    this.forceUpdate();
   }
 
-  render() {
+   render() {
     return (
       <View style={styles.MainContainer}>
         <TextInput
@@ -105,7 +118,7 @@ export default class AddCityScreen extends React.Component {
 
         
         <ScrollView>
-          {this.renderCities()}
+          { this.renderCities()}
         </ScrollView>
       </View>
     );

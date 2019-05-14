@@ -9,7 +9,7 @@ import StorageService from '../Services/StorageService';
 
 export default class LongTermScreen extends React.Component {
   static navigationOptions = {
-    title: 'Prognoza długoterminowa',
+    title: 'Longterm Forecast',
   };
 
   constructor(props){

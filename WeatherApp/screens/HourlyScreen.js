@@ -8,7 +8,7 @@ import StorageService from '../Services/StorageService';
 
 export default class HourlyScreen extends React.Component {
   static navigationOptions = {
-    title: 'Prognoza Godzinowa',
+    title: 'Hourly Forecast',
   };
 
   constructor(props){
@@ -22,7 +22,15 @@ export default class HourlyScreen extends React.Component {
   
 
   async componentDidMount(){
-  const city = await StorageService.retrieveData('currentCity');
+    this.getWeather();
+  }
+
+  async componentDidUpdate(){
+    this.getWeather();
+  }
+
+  getWeather = async () => {
+    const city = await StorageService.retrieveData('currentCity');
 
     if(city != null)
     {

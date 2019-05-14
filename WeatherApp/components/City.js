@@ -22,9 +22,9 @@ export class City extends React.Component {
                     <Button title='usun' onPress={this.deleteCity}/>
                 </View>
               
-                <View style={styles.buttonSelect} >
+                {this.props.selected ?  null : ( <View style={styles.buttonSelect} >
                     <Button title='wybierz' onPress={this.selectCity}/>                    
-                </View>
+                </View>)} 
 
           </View>
   
