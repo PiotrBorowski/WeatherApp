@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 import { WEATHER_API_HOMESCREEN, WEATHER_API_ID, WEATHER_API_ICON } from '../constants/url';
 import WeatherService from '../Services/WeatherService';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import StorageService from '../Services/StorageService';
 
 export default class HomeScreen extends React.Component {
   
@@ -32,8 +34,8 @@ export default class HomeScreen extends React.Component {
       humidity: 0,
       iconUrl: '01d',
       wind: 0,
-      cityName: 'Wrocław',
-      description: 'Raining',
+      cityName: '',
+      description: '',
       date: '01-01-2001'
     }
   }
@@ -44,17 +46,22 @@ export default class HomeScreen extends React.Component {
       headerRight: (
         <View style={styles.addButton}>
           <Button
+            style={styles.headerButton}
             onPress={() => navigation.navigate('AddCity')}
-            title="Dodaj miasto"
+            title="Cities"
             color='rgba(96,100,109, 0.5)'      
-          />
+          />       
         </View>        
       )
     };
   };
 
   componentDidMount(){
-     this.getLocation();
+      this.getLocation();
+    }
+
+  componentDidUpdate(){
+      this.getWeatherByName();
     }
 
   getLocation(){
@@ -66,24 +73,49 @@ export default class HomeScreen extends React.Component {
           })
           this.getWeather();
         },
-        (error) => Alert.alert(error.message),
+        (error) => {this.getWeatherByName()},
         { enableHighAccuracy: false}
     );  
   }
 
-  getWeather(){
+  async getWeather(){
     WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID)
-    .then(
-      (response) => this.setState({
+    .then(    
+      async (response) => {this.setState({
         temperature: response.list[0].main.temp-273, 
         cityName: response.city.name,
         iconUrl: response.list[0].weather[0].icon,
         pressure: response.list[0].main.pressure,
         humidity: response.list[0].main.humidity,
         wind: response.list[0].wind.speed,
-        decription: response.list[0].weather[0].description,
+        description: response.list[0].weather[0].description,
         date: response.list[0].dt_txt
-      }));
+      })
+
+      await StorageService.storeValue('currentCity',this.state.cityName);
+      }
+      );
+  }
+
+  async getWeatherByName(){
+    const city = await StorageService.retrieveData('currentCity');
+
+    if(city != null)
+    {
+      WeatherService.CallService(WEATHER_API_HOMESCREEN + '?q=' + city + '&cnt=1&' +  WEATHER_API_ID)
+      .then(
+        (response) => this.setState({
+          temperature: response.list[0].main.temp-273, 
+          cityName: response.city.name,
+          iconUrl: response.list[0].weather[0].icon,
+          pressure: response.list[0].main.pressure,
+          humidity: response.list[0].main.humidity,
+          wind: response.list[0].wind.speed,
+          description: response.list[0].weather[0].description,
+          date: response.list[0].dt_txt
+        })
+        );
+    }
   }
 
   render() {
@@ -108,11 +140,17 @@ export default class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.additionalInfoContainer}>
-          <Text style={styles.additionalInfo}><MaterialCommunityIcons name='weather-fog' size={12}/> Wilgotność: {this.state.humidity}%</Text>
-          <Text style={styles.additionalInfo}><Feather name='arrow-down' size={12}/> Ciśnienie: {this.state.pressure} hPa</Text>
-          <Text style={styles.additionalInfo}><Feather name='wind' size={12}/> Wiatr: {this.state.wind} km/h</Text>
+          <Text style={styles.additionalInfo}><MaterialCommunityIcons name='weather-fog' size={12}/> Humidity: {this.state.humidity}%</Text>
+          <Text style={styles.additionalInfo}><Feather name='arrow-down' size={12}/> Pressure: {this.state.pressure} hPa</Text>
+          <Text style={styles.additionalInfo}><Feather name='wind' size={12}/> Wind: {this.state.wind} km/h</Text>         
         </View>
-
+        
+        <Button
+         style={styles.headerButton}
+         onPress={this.getLocation}
+         title="GPS"
+         color='rgba(96,100,109, 0.5)' 
+        />
       </View>
     );
   }
@@ -122,6 +160,9 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   addButton: {
     margin: 5,
+    flexDirection:'row', 
+    flexWrap:'wrap',
+     justifyContent: 'space-between'
   },
   container: {
     flex: 1,
@@ -160,5 +201,10 @@ const styles = StyleSheet.create({
   },
   additionalInfo: {
     fontSize: 14
+  },
+  headerButton: {
+    margin: 5,
+    marginLeft: 10,
+    marginRight: 10
   }
 });

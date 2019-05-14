@@ -1,13 +1,14 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, AsyncStorage, Alert } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { WeatherUnit } from '../components/WeatherUnit';
-import {WEATHER_API_SAMPLE, WEATHER_API} from '../constants/url'
+import {WEATHER_API_ID, WEATHER_API_HOUR, WEATHER_API_ICON} from '../constants/url'
 import WeatherService from '../Services/WeatherService';
+import StorageService from '../Services/StorageService';
 
 export default class HourlyScreen extends React.Component {
   static navigationOptions = {
-    title: 'Prognoza Godzinowa',
+    title: 'Hourly Forecast',
   };
 
   constructor(props){
@@ -18,8 +19,23 @@ export default class HourlyScreen extends React.Component {
     }
   }
 
-  componentDidMount(){
-  WeatherService.CallService(WEATHER_API).then((response) => this.setState({weatherArray: response.list, cityName: response.city.name}));
+  
+
+  async componentDidMount(){
+    this.getWeather();
+  }
+
+  async componentDidUpdate(){
+    this.getWeather();
+  }
+
+  getWeather = async () => {
+    const city = await StorageService.retrieveData('currentCity');
+
+    if(city != null)
+    {
+      WeatherService.CallService(WEATHER_API_HOUR + city + WEATHER_API_ID).then((response) => this.setState({weatherArray: response.list, cityName: response.city.name}));
+    }
   }
 
   renderWeather = () => {
