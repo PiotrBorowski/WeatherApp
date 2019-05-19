@@ -37,7 +37,7 @@ export default class AddCityScreen extends React.Component {
   addCity = async () => 
   {
     WeatherService
-    .CallService(WEATHER_API_HOMESCREEN + '?q=' + this.state.city + '&cnt=1&' + WEATHER_API_ID)
+    .CallService(WEATHER_API_HOMESCREEN + '?q=' + this.state.city + '&cnt=1' + WEATHER_API_ID)
     .then(    
        async (response) => {
          

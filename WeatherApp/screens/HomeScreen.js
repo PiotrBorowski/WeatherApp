@@ -79,7 +79,7 @@ export default class HomeScreen extends React.Component {
   }
 
   async getWeather(){
-    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1&' + WEATHER_API_ID)
+    WeatherService.CallService(WEATHER_API_HOMESCREEN + '?lat='+ this.state.latitude + '&lon=' + this.state.longitude + '&cnt=1' + WEATHER_API_ID)
     .then(    
       async (response) => {this.setState({
         temperature: response.list[0].main.temp-273, 
