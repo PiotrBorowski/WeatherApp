@@ -15,6 +15,7 @@ import {
 import { WEATHER_API_HOMESCREEN, WEATHER_API_ID, WEATHER_API_ICON } from '../constants/url';
 import WeatherService from '../Services/WeatherService';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import {LinearGradient}from 'expo'
 import StorageService from '../Services/StorageService';
 
 export default class HomeScreen extends React.Component {
@@ -74,7 +75,7 @@ export default class HomeScreen extends React.Component {
           this.getWeather();
         },
         (error) => {this.getWeatherByName()},
-        { enableHighAccuracy: false}
+        { enableHighAccuracy: true}
     );  
   }
 
@@ -121,6 +122,8 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}> 
+      <LinearGradient colors={['#e2f4f4', '#aaf6f4', '#a3e5f9']}
+          style={styles.container}>
         <Text style={styles.cityName}>{this.state.cityName}</Text> 
         <Text style={styles.date}>{this.state.date}</Text> 
 
@@ -147,10 +150,11 @@ export default class HomeScreen extends React.Component {
         
         <Button
          style={styles.headerButton}
-         onPress={this.getLocation}
+         onPress={() => { this.getLocation()}}
          title="GPS"
          color='rgba(96,100,109, 0.5)' 
         />
+        </LinearGradient>
       </View>
     );
   }

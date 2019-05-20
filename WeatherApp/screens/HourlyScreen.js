@@ -5,6 +5,8 @@ import { WeatherUnit } from '../components/WeatherUnit';
 import {WEATHER_API_ID, WEATHER_API_HOUR, WEATHER_API_ICON} from '../constants/url'
 import WeatherService from '../Services/WeatherService';
 import StorageService from '../Services/StorageService';
+import {LinearGradient}from 'expo'
+
 
 export default class HourlyScreen extends React.Component {
   static navigationOptions = {
@@ -50,10 +52,13 @@ export default class HourlyScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+      <LinearGradient colors={['#e2f4f4', '#aaf6f4', '#a3e5f9']}
+          style={styles.container}>
         <Text style={styles.cityName}>{this.state.cityName}</Text>
         <ScrollView >
           {this.renderWeather()}
         </ScrollView>
+      </LinearGradient>
       </View>
  
     );
@@ -63,7 +68,6 @@ export default class HourlyScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: '#fff',
   },
   codeHighlightText: {
@@ -73,5 +77,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: 'rgba(96,100,109, 1)',
     textAlign: 'center',
+    paddingTop: 10,
   },
 });

@@ -5,6 +5,8 @@ import WeatherService from '../Services/WeatherService';
 import { WeatherUnitDaily } from '../components/WeatherUnitDaily';
 import moment from 'moment';
 import StorageService from '../Services/StorageService';
+import {LinearGradient}from 'expo'
+
 
 
 export default class LongTermScreen extends React.Component {
@@ -49,10 +51,13 @@ export default class LongTermScreen extends React.Component {
      * content, we just wanted to give you a quick view of your config */
     return (
       <View style={styles.container}>
+      <LinearGradient colors={['#e2f4f4', '#aaf6f4', '#a3e5f9']}
+          style={styles.container}>
       <Text style={styles.cityName}>{this.state.cityName}</Text>
         <ScrollView>
         {this.renderWeather()}
         </ScrollView>
+        </LinearGradient>
       </View>
 
     );
@@ -64,7 +69,6 @@ export default class LongTermScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: '#fff',
   },
   codeHighlightText: {
@@ -74,5 +78,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: 'rgba(96,100,109, 1)',
     textAlign: 'center',
+    paddingTop: 10,
   },
 });
